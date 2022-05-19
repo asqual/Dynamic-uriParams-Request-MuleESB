@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ff5a92bf-1662-44fe-b51e-98b29dc812d3" doc:description="This application is to integrate with an external API using Uri params  zipcode" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="dynamic-uriparams-requestflow" doc:id="e49e1e9c-4076-41ab-8108-927cc095657a" >
+		<http:listener doc:name="Listener" doc:id="1b62d17b-443f-41b9-9f88-6c2390b478c7" doc:description="This application is to integrate with an external API using Uri params zipcode" config-ref="HTTP_Listener_config" path="get-information/{zipcode}"/>
+		<set-variable value="#[attributes.uriParams.zipcode]" doc:name="A Variable to store the zipcode" doc:id="da9cdf8d-d1bb-4a29-bab4-ccd697c67351" variableName="zipcodevar"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1f15c375-83c1-4c53-a7b8-297ad7d55315" />
+		<http:request method="GET" doc:name="Zippopotam" doc:id="a3f2eaf3-8e87-4c1c-b8b2-a51c6fb14ef3" url='#["https://api.zippopotam.us/us/" ++ vars.zipcodevar]'/>
+		<logger level="INFO" doc:name="Logger" doc:id="59288a0e-3bda-410f-a5e4-04a0f32d5fc2" />
+	</flow>
+</mule>
